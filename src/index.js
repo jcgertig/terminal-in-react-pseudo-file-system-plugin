@@ -26,10 +26,6 @@ export default class PseudoFileSystem {
   load(api) {
     this.api = api;
     this.currentPath = '';
-    const _ = [
-      this.pathSeporator + HOME_PATH.join(this.pathSeporator) + this.pathSeporator,
-    ];
-    this.enterDir().method({ _ });
     this.filesystem = {
       name: this.pathSeporator,
       type: DIR,
@@ -47,6 +43,12 @@ export default class PseudoFileSystem {
         },
       },
     };
+
+
+    const _ = [
+      this.pathSeporator + HOME_PATH.join(this.pathSeporator) + this.pathSeporator,
+    ];
+    this.enterDir().method({ _ });
   }
 
   commands = {
