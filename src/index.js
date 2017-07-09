@@ -58,6 +58,8 @@ export default class PseudoFileSystem {
     rm: this.removeFromFileSystem(),
     mkdir: this.createDir(),
     touch: this.createFile(),
+    cat: this.runCat(),
+    echo: this.runEcho(),
   };
 
   descriptions = {
@@ -66,6 +68,8 @@ export default class PseudoFileSystem {
     rm: 'Remove a file(s)',
     mkdir: 'Create a directory',
     touch: 'Create a file',
+    cat: 'Echo file contents',
+    echo: 'Echo the to ouput',
   };
 
   @decorate(memoize(500))
@@ -253,6 +257,49 @@ export default class PseudoFileSystem {
           defaultValue: false,
         },
       ],
+    };
+  }
+
+  runCat() {
+    return {
+      method: (args) => {
+        if (args._.length > 0) {
+          const pathA = this.parsePath(args._[0]);
+          const file = this.getContents(pathA);
+          if (file !== null && file.type === FILE) {
+            if (args._[1] === '>>') {
+              const pathB = this.parsePath(args._[2]);
+              const fileB = this.getContents(pathB);
+              if (fileB !== null && fileB.type === FILE) {
+                fileB.contents += `\n${file.contents}`;
+                this.addToFileSystem(pathB, fileB);
+              }
+            } else {
+              this.api.printLine(file.contents);
+            }
+          }
+        }
+      },
+    };
+  }
+
+  runEcho() {
+    return {
+      method: (args) => {
+        if (args._.length > 0) {
+          if (args._.indexOf('>>') > -1) {
+            const split = args._.join(' ').split(' >> ');
+            const path = this.parsePath(split[1]);
+            const file = this.getContents(path);
+            if (file !== null && file.type === FILE) {
+              file.contents += `\n${split[0]}`;
+              this.addToFileSystem(path, file);
+            }
+          } else {
+            this.api.printLine(args._.join(' '));
+          }
+        }
+      },
     };
   }
 

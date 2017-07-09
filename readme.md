@@ -27,6 +27,8 @@ The commands it adds are:
  - `rm`
  - `mkdir`
  - `touch`
+ - `cat`
+ - `echo`
 
 [npm-dm]: https://img.shields.io/npm/dm/terminal-in-react-pseudo-file-system-plugin.svg
 [npm-dt]: https://img.shields.io/npm/dt/terminal-in-react-pseudo-file-system-plugin.svg
