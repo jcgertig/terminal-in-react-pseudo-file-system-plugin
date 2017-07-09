@@ -1,7 +1,7 @@
 {
   "name": "terminal-in-react-pseudo-file-system-plugin",
   "version": "1.0.0",
-  "description": "Date class that supports up to nano seconds",
+  "description": "Plugin to add a pseudo file system to terminal-in-react",
   "main": "lib/index.js",
   "scripts": {
     "lint": "eslint /src",
