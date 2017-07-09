@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'; // eslint-disable-line
 import { autobind, decorate } from 'core-decorators';
 import set from 'lodash.set';
 import memoize from 'memoizerific';
@@ -64,8 +64,7 @@ export default class PseudoFileSystem {
   };
 
   @decorate(memoize(500))
-  prasePath(path) {
-    const split = path.split(this.pathSeporator);
+  doParse(split) {
     let isDir = false;
     let isRoot = false;
     if (split[split.length - 1] === '') {
@@ -101,33 +100,41 @@ export default class PseudoFileSystem {
       parts: modPath,
       isRoot,
       isDir,
-      toString() {
-        const stringParts = [...modPath];
-        if (isDir) {
-          stringParts.push('');
-        }
-        if (isRoot) {
-          stringParts.unshift('');
-        }
-        return stringParts.join(this.pathSeporator);
-      },
     };
   }
 
-  isValidPath({ parts, toString }) {
+  toStringPath(path) {
+    const stringParts = [...path.parts];
+    if (path.isDir) {
+      stringParts.push('');
+    }
+    if (path.isRoot) {
+      stringParts.unshift('');
+    }
+    return stringParts.join(this.pathSeporator);
+  }
+
+  parsePath(path) {
+    const split = path.split(this.pathSeporator);
+    return this.doParse(split);
+  }
+
+  isValidPath(path) {
+    const { parts } = path;
     let last = this.filesystem;
     for (let i = 0; i < parts.length; i += 1) {
       if (has(last.contents, parts[i])) {
         last = last.contents[parts[i]];
       } else {
-        this.api.printLine(`Not a valid path: ${toString()}`);
+        this.api.printLine(`Not a valid path: ${this.toStringPath(path)}`);
       }
     }
     return true;
   }
 
-  getContents({ parts, toString }) {
-    if (this.isValidPath({ parts, toString })) {
+  getContents(path) {
+    const { parts } = path;
+    if (this.isValidPath(path)) {
       let last = this.filesystem;
       for (let i = 0; i < parts.length; i += 1) {
         if (has(last.contents, parts[i])) {
@@ -146,10 +153,10 @@ export default class PseudoFileSystem {
   enterDir() {
     return {
       method: (args) => {
-        const newPath = this.prasePath(args._.join(' '));
+        const newPath = this.parsePath(args._.join(' '));
         if (this.isValidPath(newPath)) {
           this.currentPath = newPath;
-          this.api.setPromptPrefix(`${this.currentPath.toString()} `);
+          this.api.setPromptPrefix(`${this.toStringPath(this.currentPath)} `);
         }
       },
     };
@@ -158,10 +165,10 @@ export default class PseudoFileSystem {
   createDir() {
     return {
       method: (args) => {
-        const path = this.prasePath(args._[0]);
+        const path = this.parsePath(args._[0]);
         const parentDir = path.parts.slice(0, path.parts.length - 2);
         const newDir = path.parts[path.parts.length - 1];
-        const dir = this.getContents({ parts: parentDir, toString: path.toString });
+        const dir = this.getContents({ parts: parentDir });
         if (dir !== null) {
           if (!has(dir.contents, newDir)) {
             this.addToFileSystem(path, {
@@ -178,10 +185,10 @@ export default class PseudoFileSystem {
   createFile() {
     return {
       method: (args) => {
-        const path = this.prasePath(args._[0]);
+        const path = this.parsePath(args._[0]);
         const parentDir = path.parts.slice(0, path.parts.length - 2);
         const newFile = path.parts[path.parts.length - 1];
-        const dir = this.getContents({ parts: parentDir, toString: path.toString });
+        const dir = this.getContents({ parts: parentDir });
         if (dir !== null) {
           if (!has(dir.contents, newFile)) {
             this.addToFileSystem(path, {
@@ -198,7 +205,7 @@ export default class PseudoFileSystem {
   removeFromFileSystem() {
     return {
       method: (args) => {
-        const path = this.prasePath(args._[0]);
+        const path = this.parsePath(args._[0]);
         const contents = this.getContents(path);
         if (contents !== null) {
           if (
@@ -206,7 +213,7 @@ export default class PseudoFileSystem {
             Object.keys(contents.contents).length > 0 &&
             !args.recursive
           ) {
-            this.api.printLine(`${path.toString()} is not empty`);
+            this.api.printLine(`${this.toStringPath(path)} is not empty`);
           } else {
             this.addToFileSystem(path, undefined);
           }
@@ -230,7 +237,7 @@ export default class PseudoFileSystem {
   listDirContents() {
     return {
       method: (args) => {
-        const path = this.prasePath(args._[0] || '.');
+        const path = this.parsePath(args._[0] || '.');
         if (path.isDir) {
           const dir = this.getContents(path);
           if (dir !== null) {
