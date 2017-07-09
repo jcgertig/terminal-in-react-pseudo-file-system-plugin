@@ -26,7 +26,9 @@ export default class PseudoFileSystem {
   load(api) {
     this.api = api;
     this.currentPath = '';
-    const _ = this.pathSeporator + HOME_PATH.join(this.pathSeporator) + this.pathSeporator;
+    const _ = [
+      this.pathSeporator + HOME_PATH.join(this.pathSeporator) + this.pathSeporator,
+    ];
     this.enterDir().method({ _ });
     this.filesystem = {
       name: this.pathSeporator,
