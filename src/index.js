@@ -2,6 +2,9 @@ import React from 'react'; // eslint-disable-line
 import { autobind, decorate } from 'core-decorators';
 import set from 'lodash.set';
 import memoize from 'memoizerific';
+import langMap from 'lang-map';
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import * as syntaxStyles from 'react-syntax-highlighter/dist/styles';
 
 const DIR = 'dir';
 const FILE = 'file';
@@ -17,7 +20,7 @@ function has(obj, key) {
 @autobind
 export default class PseudoFileSystem {
   name = 'PseudoFileSystem';
-  version = '1.0.19';
+  version = '1.2.0';
 
   constructor(pathSeporator = '/') {
     this.pathSeporator = pathSeporator;
@@ -275,7 +278,13 @@ export default class PseudoFileSystem {
                 this.addToFileSystem(pathB, fileB);
               }
             } else {
-              this.api.printLine(file.contents);
+              const split = file.name.split('.');
+              const lang = langMap.languages(split[split.length - 1])[0];
+              this.api.printLine((
+                <SyntaxHighlighter language={lang} style={syntaxStyles[lang]}>
+                  {file.contents}
+                </SyntaxHighlighter>
+              ));
             }
           }
         }
