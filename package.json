@@ -1,6 +1,6 @@
 {
   "name": "terminal-in-react-pseudo-file-system-plugin",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Plugin to add a pseudo file system to terminal-in-react",
   "main": "lib/index.js",
   "scripts": {
