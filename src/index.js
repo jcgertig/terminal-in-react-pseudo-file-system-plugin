@@ -1,6 +1,7 @@
 import React from 'react';
-import { autobind } from 'core-decorators';
+import { autobind, decorate } from 'core-decorators';
 import set from 'lodash.set';
+import memoize from 'memoizerific';
 
 const DIR = 'dir';
 const FILE = 'file';
@@ -62,6 +63,7 @@ export default class PseudoFileSystem {
     touch: 'Create a file',
   };
 
+  @decorate(memoize(500))
   prasePath(path) {
     const split = path.split(this.pathSeporator);
     let isDir = false;
