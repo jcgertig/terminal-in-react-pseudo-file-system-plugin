@@ -19,6 +19,25 @@ npm i -S terminal-in-react-pseudo-file-system-plugin
 yarn add terminal-in-react-pseudo-file-system-plugin
 ```
 
+# Usage
+
+The default export is a function the returns the plugin class. The function takes
+on argument the `pathSeporator` this is defaulted to `'\'` so it is not required.
+
+
+```jsx
+import pseudoFileSystemPlugin from 'terminal-in-react-pseudo-file-system-plugin';
+const FileSystemPlugin = pseudoFileSystemPlugin();
+
+...
+<Terminal
+  plugins={[
+    FileSystemPlugin
+  ]}
+/>
+...
+```
+
 # Commands
 The commands it adds are:
 
