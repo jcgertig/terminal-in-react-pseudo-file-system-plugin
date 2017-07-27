@@ -30,6 +30,21 @@ The commands it adds are:
  - `cat`
  - `echo`
 
+# Plugin public methods
+The methods available to other plugins
+
+ - `parsePath`
+ - `isValidPath`
+ - `createDir`
+ - `createFile`
+ - `removeDir`
+ - `removeFile`
+ - `readDir`
+ - `readFile`
+ - `writeFile`
+ - `pathToString`
+ - `types`
+
 [npm-dm]: https://img.shields.io/npm/dm/terminal-in-react-pseudo-file-system-plugin.svg
 [npm-dt]: https://img.shields.io/npm/dt/terminal-in-react-pseudo-file-system-plugin.svg
 [npm-v]: https://img.shields.io/npm/v/terminal-in-react-pseudo-file-system-plugin.svg
