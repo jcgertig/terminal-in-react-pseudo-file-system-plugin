@@ -1294,6 +1294,10 @@ detect-indent@^4.0.0:
   dependencies:
     repeating "^2.0.0"
 
+dexie@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/dexie/-/dexie-1.5.1.tgz#ac3ad5a0ebaf7e6e42760db58710418d4a756624"
+
 diffie-hellman@^5.0.0:
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/diffie-hellman/-/diffie-hellman-5.0.2.tgz#b5835739270cfe26acf632099fded2a07f209e5e"
@@ -3164,9 +3168,9 @@ tar@^2.2.1:
     fstream "^1.0.2"
     inherits "2"
 
-terminal-in-react@^3.4.0:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/terminal-in-react/-/terminal-in-react-3.4.0.tgz#b3a554ec706485c0e362a6c01c22bf8dccdd4487"
+terminal-in-react@^3.4.2:
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/terminal-in-react/-/terminal-in-react-3.4.2.tgz#27891302dea02553a11a3617a93cda4be6408ba4"
   dependencies:
     camelcase "^4.1.0"
     lodash.isequal "^4.5.0"
