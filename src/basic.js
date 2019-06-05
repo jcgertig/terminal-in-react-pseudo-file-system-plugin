@@ -342,6 +342,10 @@ export default function configPlugin(pathSeporator = '/') {
               const split = args._.join(' ').split(' >> ');
               const path = this.parsePath(split[1]);
               this.writeToFile(path, split[0], { flag: 'a' });
+            }else if (args._.indexOf('>') > -1) {
+              const split = args._.join(' ').split(' > ');
+              const path = this.parsePath(split[1]);
+              this.writeToFile(path, split[0], { flag: 'w' });
             } else {
               this.api.printLine(args._.join(' '));
             }
