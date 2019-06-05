@@ -222,7 +222,6 @@ export default function configPlugin(pathSeporator = '/') {
     }
 
     createDir(path) {
-      if (this.isValidPath(path)) {
         const parentDir = path.parts.slice(0, path.parts.length - 2);
         const newDir = path.parts[path.parts.length - 1];
         const dir = this.getContents({ parts: parentDir });
@@ -235,7 +234,6 @@ export default function configPlugin(pathSeporator = '/') {
             });
           }
         }
-      }
     }
 
     createFileCommand() {
