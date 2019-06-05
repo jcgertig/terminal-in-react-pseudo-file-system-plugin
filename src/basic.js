@@ -222,7 +222,6 @@ export default function configPlugin(pathSeporator = '/') {
     }
 
     createDir(path) {
-      if (this.isValidPath(path)) {
         const parentDir = path.parts.slice(0, path.parts.length - 2);
         const newDir = path.parts[path.parts.length - 1];
         const dir = this.getContents({ parts: parentDir });
@@ -235,7 +234,6 @@ export default function configPlugin(pathSeporator = '/') {
             });
           }
         }
-      }
     }
 
     createFileCommand() {
@@ -344,6 +342,10 @@ export default function configPlugin(pathSeporator = '/') {
               const split = args._.join(' ').split(' >> ');
               const path = this.parsePath(split[1]);
               this.writeToFile(path, split[0], { flag: 'a' });
+            }else if (args._.indexOf('>') > -1) {
+              const split = args._.join(' ').split(' > ');
+              const path = this.parsePath(split[1]);
+              this.writeToFile(path, split[0], { flag: 'w' });
             } else {
               this.api.printLine(args._.join(' '));
             }
